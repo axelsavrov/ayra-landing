@@ -1,24 +1,14 @@
-/* eslint-disable react/jsx-no-undef, @typescript-eslint/no-unused-vars */
 "use client";
+
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-/* =========================================================
-   SUBCOMPONENTES (declarados ANTES para que ESLint no marque
-   'react/jsx-no-undef' cuando se usen más abajo)
-   ========================================================= */
-
-/* ============== Headings con gradient ============== */
+/* ======================= Headings con gradient ======================= */
 function GradientH2({ text, size = "lg" }: { text: string; size?: "md" | "lg" }) {
-  const sizes = {
-    md: "text-4xl md:text-5xl",
-    lg: "text-5xl md:text-6xl",
-  }[size];
+  const sizes = { md: "text-4xl md:text-5xl", lg: "text-5xl md:text-6xl" }[size];
   return (
-    <h2
-      className={`${sizes} font-bold bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-orange-400 bg-clip-text text-transparent`}
-    >
+    <h2 className={`${sizes} font-bold bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-orange-400 bg-clip-text text-transparent`}>
       {text}
     </h2>
   );
@@ -31,8 +21,8 @@ function GradientH3({ text }: { text: string }) {
   );
 }
 
-/* ======================= HERO helpers ======================= */
-function HeroVideoFallback({ isDark }: { isDark: boolean }) {
+/* ======================= HERO helper (video fallback) ======================= */
+function HeroVideoFallback() {
   const [videoOk, setVideoOk] = useState(true);
   return videoOk ? (
     <video
@@ -126,6 +116,7 @@ function Hero({ isDark, onOpenDemo }: { isDark: boolean; onOpenDemo: () => void 
         isDark ? "bg-gradient-to-b from-black via-neutral-900 to-black" : "bg-gradient-to-b from-white via-neutral-100 to-white",
       ].join(" ")}
     >
+      {/* Glow */}
       <div
         className={[
           "pointer-events-none absolute inset-0",
@@ -136,6 +127,7 @@ function Hero({ isDark, onOpenDemo }: { isDark: boolean; onOpenDemo: () => void 
       />
 
       <div className="mx-auto max-w-7xl px-6 py-20 grid lg:grid-cols-[1.05fr_0.95fr] gap-16 items-center">
+        {/* Copy */}
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <h1 className="text-6xl md:text-7xl font-bold leading-[1.05]">
             Ayra{" "}
@@ -144,7 +136,12 @@ function Hero({ isDark, onOpenDemo }: { isDark: boolean; onOpenDemo: () => void 
             </span>
           </h1>
 
-          <p className={["mt-6 max-w-xl text-xl", isDark ? "text-neutral-300" : "text-neutral-600"].join(" ")}>
+          <p
+            className={[
+              "mt-6 max-w-xl text-xl",
+              isDark ? "text-neutral-300" : "text-neutral-600",
+            ].join(" ")}
+          >
             One platform. Seamless workflows. Inside WhatsApp, Teams, Messenger & Slack.
             No new apps, no friction.
           </p>
@@ -181,6 +178,7 @@ function Hero({ isDark, onOpenDemo }: { isDark: boolean; onOpenDemo: () => void 
           </div>
         </motion.div>
 
+        {/* iPhone mock con video */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -195,9 +193,16 @@ function Hero({ isDark, onOpenDemo }: { isDark: boolean; onOpenDemo: () => void 
               "shadow-[0_30px_120px_rgba(0,0,0,0.45)]",
             ].join(" ")}
           >
-            <div className={["absolute left-1/2 -translate-x-1/2 top-3 h-6 w-40 rounded-full", isDark ? "bg-black" : "bg-neutral-200"].join(" ")} />
+            {/* Notch */}
+            <div
+              className={[
+                "absolute left-1/2 -translate-x-1/2 top-3 h-6 w-40 rounded-full",
+                isDark ? "bg-black" : "bg-neutral-200",
+              ].join(" ")}
+            />
+            {/* Video dentro del “dispositivo” */}
             <div className="pt-9">
-              <HeroVideoFallback isDark={isDark} />
+              <HeroVideoFallback />
             </div>
           </div>
         </motion.div>
@@ -487,18 +492,17 @@ function ChatDemoModal({ open, onClose, isDark }: { open: boolean; onClose: () =
   const [input, setInput] = useState("");
   const listRef = useRef<HTMLDivElement>(null);
 
+  // Autoscroll
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, open]);
 
+  // Envío con burbuja degradada para el usuario
   const handleSend = () => {
     const text = input.trim();
     if (!text) return;
-
-    // ✅ Versión segura para TypeScript y con burbuja chida para el usuario
     setMessages((prev) => [...prev, { role: "user", content: text }]);
     setInput("");
-
     setTimeout(() => {
       const reply = simulateAyra(text);
       setMessages((prev) => [...prev, { role: "ayra", content: reply }]);
@@ -509,7 +513,9 @@ function ChatDemoModal({ open, onClose, isDark }: { open: boolean; onClose: () =
     <AnimatePresence>
       {open && (
         <motion.div className="fixed inset-0 z-[70] flex items-center justify-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          {/* Backdrop */}
           <div className="absolute inset-0 bg-black/60" onClick={onClose} aria-hidden />
+          {/* Modal */}
           <motion.div
             initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -518,10 +524,7 @@ function ChatDemoModal({ open, onClose, isDark }: { open: boolean; onClose: () =
           >
             <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
               <div className="font-semibold">Ayra — Live Demo</div>
-              <button
-                onClick={onClose}
-                className={["rounded-lg px-3 py-1 text-sm", isDark ? "hover:bg-white/10" : "hover:bg-black/5"].join(" ")}
-              >
+              <button onClick={onClose} className={["rounded-lg px-3 py-1 text-sm", isDark ? "hover:bg-white/10" : "hover:bg-black/5"].join(" ")}>
                 Close
               </button>
             </div>
@@ -588,14 +591,12 @@ function simulateAyra(q: string) {
   return "Got it. I’ll route that to the right module and follow up. Try asking about on-call staff, pharmacy stock, or logistics ETAs.";
 }
 
-/* =========================================================
-   COMPONENTE PRINCIPAL (después de declarar todo lo demás)
-   ========================================================= */
-
+/* ======================= PÁGINA PRINCIPAL ======================= */
 export default function AyraLanding() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [demoOpen, setDemoOpen] = useState(false);
 
+  // Persistir tema
   useEffect(() => {
     const saved = (typeof window !== "undefined" && localStorage.getItem("ayra-theme")) as "dark" | "light" | null;
     if (saved) setTheme(saved);
