@@ -1,5 +1,5 @@
+/* eslint-disable react/jsx-no-undef, @typescript-eslint/no-unused-vars */
 "use client";
-
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
