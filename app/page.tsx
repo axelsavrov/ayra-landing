@@ -1,12 +1,15 @@
-/* eslint-disable react/jsx-no-undef, @typescript-eslint/no-unused-vars */
 "use client";
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-/* ======================= Helpers: Gradients ======================= */
+/* =========================================================
+   SUBCOMPONENTES (declarados ANTES para que ESLint no marque
+   'react/jsx-no-undef' cuando se usen más abajo)
+   ========================================================= */
 
+/* ============== Headings con gradient ============== */
 function GradientH2({ text, size = "lg" }: { text: string; size?: "md" | "lg" }) {
   const sizes = {
     md: "text-4xl md:text-5xl",
@@ -28,8 +31,7 @@ function GradientH3({ text }: { text: string }) {
   );
 }
 
-/* ======================= Hero video/image fallback ======================= */
-
+/* ======================= HERO helpers ======================= */
 function HeroVideoFallback({ isDark }: { isDark: boolean }) {
   const [videoOk, setVideoOk] = useState(true);
   return videoOk ? (
@@ -54,15 +56,9 @@ function HeroVideoFallback({ isDark }: { isDark: boolean }) {
   );
 }
 
-/* ====================== HEADER ====================== */
+/* ======================= SECCIONES ======================= */
 
-function Header({
-  isDark,
-  onToggle,
-}: {
-  isDark: boolean;
-  onToggle: () => void;
-}) {
+function Header({ isDark, onToggle }: { isDark: boolean; onToggle: () => void }) {
   const nav = [
     { label: "Modules", href: "#modules" },
     { label: "Roadmap", href: "#roadmap" },
@@ -97,16 +93,13 @@ function Header({
               href={n.href}
               className={[
                 "text-sm transition-colors",
-                isDark
-                  ? "text-neutral-300 hover:text-white"
-                  : "text-neutral-600 hover:text-black",
+                isDark ? "text-neutral-300 hover:text-white" : "text-neutral-600 hover:text-black",
               ].join(" ")}
             >
               {n.label}
             </a>
           ))}
 
-          {/* Toggle */}
           <button
             onClick={onToggle}
             aria-label="Toggle theme"
@@ -125,19 +118,14 @@ function Header({
   );
 }
 
-/* ======================= HERO ======================= */
-
 function Hero({ isDark, onOpenDemo }: { isDark: boolean; onOpenDemo: () => void }) {
   return (
     <section
       className={[
         "relative overflow-hidden",
-        isDark
-          ? "bg-gradient-to-b from-black via-neutral-900 to-black"
-          : "bg-gradient-to-b from-white via-neutral-100 to-white",
+        isDark ? "bg-gradient-to-b from-black via-neutral-900 to-black" : "bg-gradient-to-b from-white via-neutral-100 to-white",
       ].join(" ")}
     >
-      {/* Glow */}
       <div
         className={[
           "pointer-events-none absolute inset-0",
@@ -148,12 +136,7 @@ function Hero({ isDark, onOpenDemo }: { isDark: boolean; onOpenDemo: () => void 
       />
 
       <div className="mx-auto max-w-7xl px-6 py-20 grid lg:grid-cols-[1.05fr_0.95fr] gap-16 items-center">
-        {/* Copy */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <h1 className="text-6xl md:text-7xl font-bold leading-[1.05]">
             Ayra{" "}
             <span className="bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-amber-300 bg-clip-text text-transparent">
@@ -161,22 +144,12 @@ function Hero({ isDark, onOpenDemo }: { isDark: boolean; onOpenDemo: () => void 
             </span>
           </h1>
 
-          <p
-            className={[
-              "mt-6 max-w-xl text-xl",
-              isDark ? "text-neutral-300" : "text-neutral-600",
-            ].join(" ")}
-          >
+          <p className={["mt-6 max-w-xl text-xl", isDark ? "text-neutral-300" : "text-neutral-600"].join(" ")}>
             One platform. Seamless workflows. Inside WhatsApp, Teams, Messenger & Slack.
             No new apps, no friction.
           </p>
 
-          <ul
-            className={[
-              "mt-8 space-y-3",
-              isDark ? "text-neutral-300" : "text-neutral-700",
-            ].join(" ")}
-          >
+          <ul className={["mt-8 space-y-3", isDark ? "text-neutral-300" : "text-neutral-700"].join(" ")}>
             <li>• Find on-call staff instantly.</li>
             <li>• Check pharmacy stock in real time.</li>
             <li>• Broadcast hospital-wide updates in one tap.</li>
@@ -208,7 +181,6 @@ function Hero({ isDark, onOpenDemo }: { isDark: boolean; onOpenDemo: () => void 
           </div>
         </motion.div>
 
-        {/* iPhone mock con video */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -223,14 +195,7 @@ function Hero({ isDark, onOpenDemo }: { isDark: boolean; onOpenDemo: () => void 
               "shadow-[0_30px_120px_rgba(0,0,0,0.45)]",
             ].join(" ")}
           >
-            {/* Notch */}
-            <div
-              className={[
-                "absolute left-1/2 -translate-x-1/2 top-3 h-6 w-40 rounded-full",
-                isDark ? "bg-black" : "bg-neutral-200",
-              ].join(" ")}
-            />
-            {/* Video dentro del “dispositivo” */}
+            <div className={["absolute left-1/2 -translate-x-1/2 top-3 h-6 w-40 rounded-full", isDark ? "bg-black" : "bg-neutral-200"].join(" ")} />
             <div className="pt-9">
               <HeroVideoFallback isDark={isDark} />
             </div>
@@ -240,8 +205,6 @@ function Hero({ isDark, onOpenDemo }: { isDark: boolean; onOpenDemo: () => void 
     </section>
   );
 }
-
-/* ======================= MODULES ====================== */
 
 function Modules({ isDark }: { isDark: boolean }) {
   const mods = [
@@ -255,12 +218,7 @@ function Modules({ isDark }: { isDark: boolean }) {
   return (
     <section id="modules" className="mx-auto max-w-7xl px-6 py-28 text-center">
       <GradientH2 text="One brand. Six modules." size="lg" />
-      <p
-        className={[
-          "mt-3 text-lg tracking-wide",
-          isDark ? "text-neutral-400" : "text-neutral-600",
-        ].join(" ")}
-      >
+      <p className={["mt-3 text-lg tracking-wide", isDark ? "text-neutral-400" : "text-neutral-600"].join(" ")}>
         Endless possibilities.
       </p>
 
@@ -272,33 +230,18 @@ function Modules({ isDark }: { isDark: boolean }) {
             className={[
               "rounded-2xl p-8 flex flex-col items-center gap-4 transition",
               "border",
-              isDark
-                ? "border-white/10 bg-white/5 hover:bg-white/10"
-                : "border-black/10 bg-black/[0.03] hover:bg-black/[0.06]",
+              isDark ? "border-white/10 bg-white/5 hover:bg-white/10" : "border-black/10 bg-black/[0.03] hover:bg-black/[0.06]",
             ].join(" ")}
           >
-            <Image
-              src={`/assets/modules/${m.name.toLowerCase()}.png`}
-              alt={`${m.name} logo`}
-              width={72}
-              height={72}
-            />
+            <Image src={`/assets/modules/${m.name.toLowerCase()}.png`} alt={`${m.name} logo`} width={72} height={72} />
             <div className="font-medium text-lg">Ayra {m.name}</div>
-            <p
-              className={
-                isDark ? "text-sm text-neutral-400" : "text-sm text-neutral-600"
-              }
-            >
-              {m.desc}
-            </p>
+            <p className={isDark ? "text-sm text-neutral-400" : "text-sm text-neutral-600"}>{m.desc}</p>
           </motion.div>
         ))}
       </div>
     </section>
   );
 }
-
-/* ======================= ROADMAP ===================== */
 
 function Roadmap({ isDark }: { isDark: boolean }) {
   const steps = [
@@ -310,7 +253,6 @@ function Roadmap({ isDark }: { isDark: boolean }) {
   return (
     <section id="roadmap" className="mx-auto max-w-6xl px-6 py-28 text-center">
       <GradientH2 text="Where are we now?" />
-
       <div className="mt-16 grid md:grid-cols-3 gap-10">
         {steps.map((s, i) => (
           <motion.div
@@ -321,28 +263,16 @@ function Roadmap({ isDark }: { isDark: boolean }) {
             whileHover={{ scale: 1.05 }}
             className={[
               "rounded-3xl p-10 shadow-xl border",
-              isDark
-                ? "border-white/10 bg-gradient-to-b from-neutral-900 to-black"
-                : "border-black/10 bg-gradient-to-b from-white to-neutral-100",
+              isDark ? "border-white/10 bg-gradient-to-b from-neutral-900 to-black" : "border-black/10 bg-gradient-to-b from-white to-neutral-100",
             ].join(" ")}
           >
             <div className="mx-auto mb-6 h-14 w-14 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 grid place-items-center text-black font-bold text-lg">
               {i + 1}
             </div>
             <h3 className="text-xl font-semibold">
-              {s.phase}{" "}
-              <span className={isDark ? "text-neutral-400" : "text-neutral-500"}>
-                {s.year}
-              </span>
+              {s.phase} <span className={isDark ? "text-neutral-400" : "text-neutral-500"}>{s.year}</span>
             </h3>
-            <p
-              className={[
-                "mt-3 text-sm",
-                isDark ? "text-neutral-300" : "text-neutral-700",
-              ].join(" ")}
-            >
-              {s.desc}
-            </p>
+            <p className={["mt-3 text-sm", isDark ? "text-neutral-300" : "text-neutral-700"].join(" ")}>{s.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -350,29 +280,16 @@ function Roadmap({ isDark }: { isDark: boolean }) {
   );
 }
 
-/* ======================= TESTIMONIALS ================= */
-
 function Testimonials({ isDark }: { isDark: boolean }) {
   const quotes = [
-    {
-      text:
-        "We’d have to test it and more, but it sounds potentially useful.",
-      author: "Dr. Q — Neurosurgeon",
-    },
-    {
-      text: "I would use it every day. Simple as that.",
-      author: "Surgical Resident — Spain",
-    },
-    {
-      text: "Feels like WhatsApp, but smarter for hospitals.",
-      author: "Chief of Radiology — Mexico",
-    },
+    { text: "We’d have to test it and more, but it sounds potentially useful.", author: "Dr. Q — Neurosurgeon" },
+    { text: "I would use it every day. Simple as that.", author: "Surgical Resident — Spain" },
+    { text: "Feels like WhatsApp, but smarter for hospitals.", author: "Chief of Radiology — Mexico" },
   ];
 
   return (
     <section id="testimonials" className="mx-auto max-w-6xl px-6 py-28 text-center">
       <GradientH2 text="What Doctors Are Saying" />
-
       <div className="mt-12 grid gap-10 md:grid-cols-3">
         {quotes.map((q, i) => (
           <motion.div
@@ -388,30 +305,16 @@ function Testimonials({ isDark }: { isDark: boolean }) {
                 : "bg-gradient-to-b from-white to-neutral-100 border-black/10 hover:scale-[1.02]",
             ].join(" ")}
           >
-            <p
-              className={[
-                "text-xl md:text-2xl leading-relaxed font-light italic",
-                isDark ? "text-neutral-200" : "text-neutral-800",
-              ].join(" ")}
-            >
+            <p className={["text-xl md:text-2xl leading-relaxed font-light italic", isDark ? "text-neutral-200" : "text-neutral-800"].join(" ")}>
               “{q.text}”
             </p>
-            <div
-              className={[
-                "mt-6 text-sm font-medium",
-                isDark ? "text-neutral-400" : "text-neutral-600",
-              ].join(" ")}
-            >
-              {q.author}
-            </div>
+            <div className={["mt-6 text-sm font-medium", isDark ? "text-neutral-400" : "text-neutral-600"].join(" ")}>{q.author}</div>
           </motion.div>
         ))}
       </div>
     </section>
   );
 }
-
-/* ======================= FOUNDER ===================== */
 
 function Founder({ isDark }: { isDark: boolean }) {
   return (
@@ -422,9 +325,7 @@ function Founder({ isDark }: { isDark: boolean }) {
         viewport={{ once: true }}
         className={[
           "rounded-3xl p-16 shadow-2xl border",
-          isDark
-            ? "border-white/10 bg-gradient-to-b from-neutral-900 to-black"
-            : "border-black/10 bg-gradient-to-b from-white to-neutral-100",
+          isDark ? "border-white/10 bg-gradient-to-b from-neutral-900 to-black" : "border-black/10 bg-gradient-to-b from-white to-neutral-100",
         ].join(" ")}
       >
         <div className="flex flex-col items-center gap-8">
@@ -433,24 +334,14 @@ function Founder({ isDark }: { isDark: boolean }) {
             alt="Axel Salinas"
             width={180}
             height={180}
-            className={[
-              "rounded-full border-4 shadow-xl",
-              isDark ? "border-white/20" : "border-black/10",
-            ].join(" ")}
+            className={["rounded-full border-4 shadow-xl", isDark ? "border-white/20" : "border-black/10"].join(" ")}
           />
           <GradientH3 text="Meet the Founder" />
-          <p
-            className={[
-              "mt-4 text-lg max-w-2xl leading-relaxed",
-              isDark ? "text-neutral-300" : "text-neutral-700",
-            ].join(" ")}
-          >
+          <p className={["mt-4 text-lg max-w-2xl leading-relaxed", isDark ? "text-neutral-300" : "text-neutral-700"].join(" ")}>
             Axel is a medical student at <span className="font-semibold">UNAM</span>, passionate about
-            reimagining healthcare workflows. Experienced in{" "}
-            <span className="font-semibold">ML & Genomics</span>, he has participated in
-            international competitions and trained through programs such as{" "}
-            <span className="italic">Harvard VIP, iGEM 2022</span>, and{" "}
-            <span className="italic">MIT Hacking Medicine</span>.
+            reimagining healthcare workflows. Experienced in <span className="font-semibold">ML & Genomics</span>,
+            he has participated in international competitions and trained through programs such as{" "}
+            <span className="italic">Harvard VIP, iGEM 2022</span>, and <span className="italic">MIT Hacking Medicine</span>.
           </p>
           <div className="mt-8 flex gap-6">
             <a
@@ -458,17 +349,10 @@ function Founder({ isDark }: { isDark: boolean }) {
               target="_blank"
               className={[
                 "flex items-center gap-2 px-6 py-3 rounded-2xl border transition",
-                isDark
-                  ? "bg-white/10 border-white/20 hover:bg-white/20"
-                  : "bg-black/[0.04] border-black/10 hover:bg-black/[0.08]",
+                isDark ? "bg-white/10 border-white/20 hover:bg-white/20" : "bg-black/[0.04] border-black/10 hover:bg-black/[0.08]",
               ].join(" ")}
             >
-              <Image
-                src="/assets/logos/github.png"
-                alt="GitHub"
-                width={24}
-                height={24}
-              />
+              <Image src="/assets/logos/github.png" alt="GitHub" width={24} height={24} />
               <span className="text-sm font-medium">GitHub</span>
             </a>
             <a
@@ -476,36 +360,21 @@ function Founder({ isDark }: { isDark: boolean }) {
               target="_blank"
               className={[
                 "flex items-center gap-2 px-6 py-3 rounded-2xl border transition",
-                isDark
-                  ? "bg-white/10 border-white/20 hover:bg-white/20"
-                  : "bg-black/[0.04] border-black/10 hover:bg-black/[0.08]",
+                isDark ? "bg-white/10 border-white/20 hover:bg-white/20" : "bg-black/[0.04] border-black/10 hover:bg-black/[0.08]",
               ].join(" ")}
             >
-              <Image
-                src="/assets/logos/linkedin.png"
-                alt="LinkedIn"
-                width={24}
-                height={24}
-              />
+              <Image src="/assets/logos/linkedin.png" alt="LinkedIn" width={24} height={24} />
               <span className="text-sm font-medium">LinkedIn</span>
             </a>
           </div>
-          <p
-            className={[
-              "mt-10 italic text-sm max-w-xl",
-              isDark ? "text-neutral-500" : "text-neutral-500",
-            ].join(" ")}
-          >
-            Ayra never touches sensitive patient information — privacy and security are at the core
-            of everything we build.
+          <p className="mt-10 italic text-sm max-w-xl text-neutral-500">
+            Ayra never touches sensitive patient information — privacy and security are at the core of everything we build.
           </p>
         </div>
       </motion.div>
     </section>
   );
 }
-
-/* ======================= TRUSTED PARTNERS (pequeño) ===================== */
 
 function TrustedPartners({ isDark }: { isDark: boolean }) {
   const partners = [
@@ -515,17 +384,10 @@ function TrustedPartners({ isDark }: { isDark: boolean }) {
   ];
   return (
     <section className="mx-auto max-w-6xl px-6 py-20 text-center">
-      <p
-        className={[
-          "text-sm tracking-wide uppercase",
-          isDark ? "text-neutral-400" : "text-neutral-600",
-        ].join(" ")}
-      >
+      <p className={["text-sm tracking-wide uppercase", isDark ? "text-neutral-400" : "text-neutral-600"].join(" ")}>
         Trusted by early partners
       </p>
-      <h4 className="mt-2 text-xl md:text-2xl font-semibold">
-        Collaborating with leading institutions to build real workflows.
-      </h4>
+      <h4 className="mt-2 text-xl md:text-2xl font-semibold">Collaborating with leading institutions to build real workflows.</h4>
 
       <div className="mt-10 grid grid-cols-3 items-center justify-items-center gap-8">
         {partners.map((p) => (
@@ -538,21 +400,12 @@ function TrustedPartners({ isDark }: { isDark: boolean }) {
   );
 }
 
-/* ======================= WAITLIST (Formspree) ===================== */
-
 function Waitlist({ isDark }: { isDark: boolean }) {
   const [submitted, setSubmitted] = useState(false);
-
   return (
     <section id="waitlist" className="mx-auto max-w-3xl px-6 py-28 text-center">
-      <div
-        className={[
-          "rounded-3xl p-12 shadow-xl border",
-          isDark ? "border-white/10 bg-white/5" : "border-black/10 bg-neutral-50",
-        ].join(" ")}
-      >
+      <div className={["rounded-3xl p-12 shadow-xl border", isDark ? "border-white/10 bg-white/5" : "border-black/10 bg-neutral-50"].join(" ")}>
         <GradientH2 text="Get early access" size="md" />
-
         {!submitted ? (
           <form
             action="https://formspree.io/f/mkgzdbqk"
@@ -567,18 +420,14 @@ function Waitlist({ isDark }: { isDark: boolean }) {
               placeholder="Enter your email"
               className={[
                 "w-full rounded-2xl px-5 py-4 text-lg focus:outline-none focus:ring-2",
-                isDark
-                  ? "border border-white/10 bg-neutral-900 focus:ring-cyan-400"
-                  : "border border-black/10 bg-white focus:ring-cyan-600",
+                isDark ? "border border-white/10 bg-neutral-900 focus:ring-cyan-400" : "border border-black/10 bg-white focus:ring-cyan-600",
               ].join(" ")}
             />
             <button
               type="submit"
               className={[
                 "rounded-2xl px-7 py-4 text-lg font-semibold transition",
-                isDark
-                  ? "bg-white text-black hover:shadow-[0_0_30px_rgba(255,255,255,0.45)]"
-                  : "bg-black text-white hover:shadow-[0_0_30px_rgba(0,0,0,0.35)]",
+                isDark ? "bg-white text-black hover:shadow-[0_0_30px_rgba(255,255,255,0.45)]" : "bg-black text-white hover:shadow-[0_0_30px_rgba(0,0,0,0.35)]",
               ].join(" ")}
             >
               Join
@@ -592,40 +441,24 @@ function Waitlist({ isDark }: { isDark: boolean }) {
   );
 }
 
-/* ==================== FOOTER + Floating Buttons ==================== */
-
 function Footer({ isDark }: { isDark: boolean }) {
   return (
-    <footer
-      className={["border-t", isDark ? "border-white/10 bg-black/90" : "border-black/10 bg-white/90"].join(
-        " "
-      )}
-    >
+    <footer className={["border-t", isDark ? "border-white/10 bg-black/90" : "border-black/10 bg-white/90"].join(" ")}>
       <div className="mx-auto max-w-7xl px-6 py-10 text-sm flex flex-col items-center justify-center text-center">
-        <div className={isDark ? "text-neutral-400" : "text-neutral-600"}>
-          © {new Date().getFullYear()} Ayra. All rights reserved.
-        </div>
+        <div className={isDark ? "text-neutral-400" : "text-neutral-600"}>© {new Date().getFullYear()} Ayra. All rights reserved.</div>
       </div>
     </footer>
   );
 }
 
-function FloatingButtons({
-  isDark,
-  onOpenDemo,
-}: {
-  isDark: boolean;
-  onOpenDemo: () => void;
-}) {
+function FloatingButtons({ isDark, onOpenDemo }: { isDark: boolean; onOpenDemo: () => void }) {
   return (
     <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-3">
       <a
         href="#waitlist"
         className={[
           "backdrop-blur-xl rounded-2xl px-5 py-3 border transition",
-          isDark
-            ? "bg-white/10 border-white/20 text-white hover:bg-white/20"
-            : "bg-black/5 border-black/10 text-black hover:bg-black/10",
+          isDark ? "bg-white/10 border-white/20 text-white hover:bg-white/20" : "bg-black/5 border-black/10 text-black hover:bg-black/10",
         ].join(" ")}
       >
         Join the waitlist →
@@ -634,9 +467,7 @@ function FloatingButtons({
         onClick={onOpenDemo}
         className={[
           "backdrop-blur-xl rounded-2xl px-5 py-3 border transition",
-          isDark
-            ? "bg-white/10 border-white/20 text-white hover:bg-white/20"
-            : "bg-black/5 border-black/10 text-black hover:bg-black/10",
+          isDark ? "bg-white/10 border-white/20 text-white hover:bg-white/20" : "bg-black/5 border-black/10 text-black hover:bg-black/10",
         ].join(" ")}
       >
         💬 Try Ayra demo
@@ -649,36 +480,23 @@ function FloatingButtons({
 
 type ChatMsg = { role: "user" | "ayra"; content: string };
 
-function ChatDemoModal({
-  open,
-  onClose,
-  isDark,
-}: {
-  open: boolean;
-  onClose: () => void;
-  isDark: boolean;
-}) {
+function ChatDemoModal({ open, onClose, isDark }: { open: boolean; onClose: () => void; isDark: boolean }) {
   const [messages, setMessages] = useState<ChatMsg[]>([
-    {
-      role: "ayra",
-      content: "Hi! I’m Ayra. Ask me anything about your hospital workflows.",
-    },
+    { role: "ayra", content: "Hi! I’m Ayra. Ask me anything about your hospital workflows." },
   ]);
   const [input, setInput] = useState("");
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    listRef.current?.scrollTo({
-      top: listRef.current.scrollHeight,
-      behavior: "smooth",
-    });
+    listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, open]);
 
   const handleSend = () => {
     const text = input.trim();
     if (!text) return;
-    const next = [...messages, { role: "user", content: text } as ChatMsg];
-    setMessages(next);
+
+    // ✅ Versión segura para TypeScript y con burbuja chida para el usuario
+    setMessages((prev) => [...prev, { role: "user", content: text }]);
     setInput("");
 
     setTimeout(() => {
@@ -690,32 +508,19 @@ function ChatDemoModal({
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
-          className="fixed inset-0 z-[70] flex items-center justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          {/* Backdrop */}
+        <motion.div className="fixed inset-0 z-[70] flex items-center justify-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           <div className="absolute inset-0 bg-black/60" onClick={onClose} aria-hidden />
-          {/* Modal */}
           <motion.div
             initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 40, opacity: 0 }}
-            className={[
-              "relative w-[92%] max-w-2xl rounded-3xl overflow-hidden border",
-              isDark ? "bg-neutral-950 border-white/10" : "bg-white border-black/10",
-            ].join(" ")}
+            className={["relative w-[92%] max-w-2xl rounded-3xl overflow-hidden border", isDark ? "bg-neutral-950 border-white/10" : "bg-white border-black/10"].join(" ")}
           >
             <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
               <div className="font-semibold">Ayra — Live Demo</div>
               <button
                 onClick={onClose}
-                className={[
-                  "rounded-lg px-3 py-1 text-sm",
-                  isDark ? "hover:bg-white/10" : "hover:bg-black/5",
-                ].join(" ")}
+                className={["rounded-lg px-3 py-1 text-sm", isDark ? "hover:bg-white/10" : "hover:bg-black/5"].join(" ")}
               >
                 Close
               </button>
@@ -750,18 +555,13 @@ function ChatDemoModal({
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
                   className={[
                     "flex-1 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2",
-                    isDark
-                      ? "bg-neutral-900 border border-white/10 focus:ring-cyan-400"
-                      : "bg-white border border-black/10 focus:ring-cyan-600",
+                    isDark ? "bg-neutral-900 border border-white/10 focus:ring-cyan-400" : "bg-white border border-black/10 focus:ring-cyan-600",
                   ].join(" ")}
                   placeholder='Try: "Who is on call in Neurosurgery?"'
                 />
                 <button
                   onClick={handleSend}
-                  className={[
-                    "rounded-2xl px-5 py-3 font-semibold",
-                    isDark ? "bg-white text-black" : "bg-black text-white",
-                  ].join(" ")}
+                  className={["rounded-2xl px-5 py-3 font-semibold", isDark ? "bg-white text-black" : "bg-black text-white"].join(" ")}
                 >
                   Send
                 </button>
@@ -788,16 +588,16 @@ function simulateAyra(q: string) {
   return "Got it. I’ll route that to the right module and follow up. Try asking about on-call staff, pharmacy stock, or logistics ETAs.";
 }
 
-/* ======================= PAGE (export default) ======================= */
+/* =========================================================
+   COMPONENTE PRINCIPAL (después de declarar todo lo demás)
+   ========================================================= */
 
 export default function AyraLanding() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [demoOpen, setDemoOpen] = useState(false);
 
-  // tema persistente
   useEffect(() => {
-    const saved = (typeof window !== "undefined" &&
-      localStorage.getItem("ayra-theme")) as "dark" | "light" | null;
+    const saved = (typeof window !== "undefined" && localStorage.getItem("ayra-theme")) as "dark" | "light" | null;
     if (saved) setTheme(saved);
   }, []);
   useEffect(() => {
@@ -809,16 +609,10 @@ export default function AyraLanding() {
   const isDark = theme === "dark";
 
   return (
-    <div
-      className={[
-        "min-h-screen font-[system-ui]",
-        isDark ? "bg-black text-neutral-100" : "bg-white text-neutral-900",
-      ].join(" ")}
-    >
+    <div className={["min-h-screen font-[system-ui]", isDark ? "bg-black text-neutral-100" : "bg-white text-neutral-900"].join(" ")}>
       <Header isDark={isDark} onToggle={() => setTheme(isDark ? "light" : "dark")} />
       <Hero isDark={isDark} onOpenDemo={() => setDemoOpen(true)} />
 
-      {/* Secciones */}
       <Modules isDark={isDark} />
       <Roadmap isDark={isDark} />
       <Testimonials isDark={isDark} />
