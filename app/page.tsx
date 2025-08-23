@@ -591,7 +591,7 @@ function simulateAyra(q: string) {
   return "Got it. I’ll route that to the right module and follow up. Try asking about on-call staff, pharmacy stock, or logistics ETAs.";
 }
 
-/* ======================= PÁGINA PRINCIPAL ======================= */
+/* ======================= PÁGINA PRINCIPAL (EXPORT) ======================= */
 export default function AyraLanding() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [demoOpen, setDemoOpen] = useState(false);
